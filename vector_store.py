@@ -1,10 +1,9 @@
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-import os
+from langchain.embeddings import HuggingFaceEmbeddings
 
 def create_vector_store(text: str):
-    # Split text into manageable chunks
+    # Split text into chunks
     text_splitter = CharacterTextSplitter(
         separator="\n",
         chunk_size=1000,
@@ -13,8 +12,10 @@ def create_vector_store(text: str):
     )
     chunks = text_splitter.split_text(text)
 
-    # Convert chunks into embeddings using OpenAI
-    embeddings = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
+    # Use local embedding model
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
+    # Create FAISS index from chunks
     vector_store = FAISS.from_texts(chunks, embedding=embeddings)
-    
+
     return vector_store

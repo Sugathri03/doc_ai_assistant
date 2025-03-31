@@ -4,7 +4,8 @@ import os
 from document_loader import extract_text
 from vector_store import create_vector_store
 from qa_engine import answer_question
-
+from dotenv import load_dotenv
+load_dotenv()
 st.set_page_config(page_title="📄 AI Document Assistant")
 
 st.title("📄 AI Document Assistant")
